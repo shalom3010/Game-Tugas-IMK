@@ -275,7 +275,7 @@
 
         <!-- Audio -->
         <audio id="bgMusic" autoplay loop>
-    <source src="https://image2url.com/audio/1766432379161-8f76fbfb-6420-4a05-9952-f2c767c539fd.mp3">
+            <source src="https://image2url.com/r2/default/audio/1768910061534-b8017a4a-2d20-4de4-95c6-73db5fd54995.mp3">
         </audio>
         <audio id="clickSound">
             <source src="https://e.top4top.io/m_36381hoji1.mp3">
@@ -283,6 +283,8 @@
         <audio id="correctSound">
             <source src="https://f.top4top.io/m_3615s7i2x1.mp3">
         </audio>
+        <audio id="narratorAudio"></audio>
+
 
         <!-- GIF Intro -->
         <img id="introGif" 
@@ -311,12 +313,11 @@
     </div>
 </div>
 
-<!-- Backsound -->
-<audio id="bgm" loop>
-    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_sample_music.mp3?filename=relaxing-ambient-11229.mp3" type="audio/mpeg">
-</audio>
-
 <script>
+
+let narratorUnlocked = false;
+
+
 /* ======================================
    DATA HEWAN
 ====================================== */
@@ -355,8 +356,7 @@ const animalGifs = {
     "Xerus": "https://image2url.com/images/1765971163848-b279c645-f1f7-4688-94b4-b39a35147460.gif",
     "Yak": "https://image2url.com/images/1765971188211-bc3edbd3-750b-4fb5-9cd0-20911cc9f2eb.gif",
     "Zebra": "https://image2url.com/images/1765971202474-cd1df986-ea42-47ed-a911-7ba1eb5fcdd0.gif",
-    
-    // dst sampai Zebra
+
 };
 
 
@@ -574,6 +574,80 @@ const animalFacts = {
     ],
 };
 
+/* ======================================
+   AUDIO NARATOR (URL)
+====================================== */
+
+const narratorSounds = {
+    "Ayam": "https://image2url.com/r2/default/audio/1768911390737-1a72d274-2b4e-4f65-a29e-b72bcade75cc.mp3",
+    "Babi": "https://image2url.com/r2/default/audio/1768911430168-4d96f4cb-c3de-473a-b9e6-bb3d63b4f12e.mp3",
+    "Cicak": "https://image2url.com/r2/default/audio/1768911456913-bcb669c3-f563-4bbf-8f63-2e69eebf6237.mp3",
+    "Domba": "https://image2url.com/r2/default/audio/1768911471699-dfec2877-64ba-4b43-a50e-c037d8fe26a8.mp3",
+    "Elang": "https://image2url.com/r2/default/audio/1768911487594-581e5c46-2f8d-43ca-bcbd-71ad1ff60d01.mp3",
+    "Flaminggo": "https://image2url.com/r2/default/audio/1768911501271-def2741d-2fca-44fc-97d6-3cf0bf904051.mp3",
+    "Gajah": "https://image2url.com/r2/default/audio/1768911518972-dccdccec-3e57-485d-a349-5221b4e70039.mp3",
+    "Harimau": "https://image2url.com/r2/default/audio/1768911537853-f5410905-c68b-459e-bcdd-514edb0bd96f.mp3",
+    "Iguana": "https://image2url.com/r2/default/audio/1768911551709-f2f5b740-04e7-4a4b-9d33-a49e60db1091.mp3",
+    "Jerapah": "https://image2url.com/r2/default/audio/1768911562611-7fd0ff12-d2a5-4bec-9191-5b738ce76118.mp3",
+    "Koala": "https://image2url.com/r2/default/audio/1768911575078-9b380fab-004f-45bb-a2a4-a44ab036f98f.mp3",
+    "Laba-Laba": "https://image2url.com/r2/default/audio/1768911595612-ec05e981-9612-4e0b-b31e-692a1d46206d.mp3",
+    "Macan": "https://image2url.com/r2/default/audio/1768911613546-3fcdb2fe-7a63-4c4b-a727-c458baf7368c.mp3",
+    "Nyamuk": "https://image2url.com/r2/default/audio/1768911629439-cb007ac8-6805-4cef-84f5-c7cac2dcf323.mp3",
+    "Orang Utan": "https://image2url.com/r2/default/audio/1768911645777-83198bfd-d552-4161-b9eb-8de060f9a396.mp3",
+    "Panda": "https://image2url.com/r2/default/audio/1768911662733-ef3750b4-d8c7-4e67-9ae0-66803baae922.mp3",
+    "Quokka": "https://image2url.com/r2/default/audio/1768911678187-0f94c9d7-49fa-438a-96d4-4f4151795ad8.mp3",
+    "Rubah": "https://image2url.com/r2/default/audio/1768911694194-9681607a-0ea5-41a1-9951-da135db4b196.mp3",
+    "Sapi": "https://image2url.com/r2/default/audio/1768911709856-eaf48427-4ec0-4afc-9a43-4b93e2faebf6.mp3",
+    "Tikus": "https://image2url.com/r2/default/audio/1768911729502-20efaa0c-4933-4cd7-b287-925802055cea.mp3",
+    "Unta": "https://image2url.com/r2/default/audio/1768911742914-ab64f700-6c27-496b-847a-5b1165690e8e.mp3",
+    "Vikuna": "https://image2url.com/r2/default/audio/1768911758265-b66aef8a-cbd1-4e1c-a52e-38fca08a5d25.mp3",
+    "Wallaby": "https://image2url.com/r2/default/audio/1768911771444-8a24e102-e171-41ba-9968-f96b34963b82.mp3",
+    "Xerus": "https://image2url.com/r2/default/audio/1768911785382-63bfa187-b7c2-4628-894c-33ea1322c422.mp3",
+    "Yak": "https://image2url.com/r2/default/audio/1768911798356-a42603ec-2bd5-46ac-9609-2eaed7d8e311.mp3",
+    "Zebra": "https://image2url.com/r2/default/audio/1768911810185-db44bdb7-4f8b-4cb0-b61e-5370d957f90f.mp3"
+};
+
+const narratorAudio = document.getElementById("narratorAudio");
+
+function playNarrator(animalName) {
+    const audioURL = narratorSounds[animalName];
+    if (!audioURL) return;
+
+    narratorAudio.pause();
+    narratorAudio.currentTime = 0;
+    narratorAudio.src = audioURL;
+
+    narratorAudio.muted = false;
+    narratorAudio.volume = 1; // 🔥 PAKSA FULL
+
+    narratorAudio.play()
+        .then(() => console.log("Narator bunyi:", animalName))
+        .catch(err => console.error("Narator gagal:", err));
+}
+
+
+setTimeout(() => {
+    introGif.classList.remove("show");
+    introGif.style.display = "none";
+
+    imgAnimal.classList.add("show");
+    leftChar.classList.add("show");
+    bubble.classList.add("show");
+    btnNext.classList.add("show");
+
+}, 2000);
+
+function fadeOutElements() {
+    imgAnimal.classList.add("fade-out");
+    btnNext.classList.add("fade-out");
+    leftChar.classList.add("fade-out");
+    bubble.classList.add("fade-out");
+
+    narratorAudio.pause();
+    narratorAudio.currentTime = 0;
+}
+
+
 
 // Elemen HTML
 const imgAnimal = document.getElementById("animalImage");
@@ -590,9 +664,14 @@ let index = 0;
    TAMPILKAN HEWAN
 ====================================== */
 btnNext.addEventListener("click", () => {
-    playClick();   // 🔊 suara klik
-    nextAnimal();  // ➡️ lanjut
+    playClick();
+
+    const name = animals[index];
+    playNarrator(name); // 🔊 HARUS DI SINI
+
+    nextAnimal();
 });
+
 
 
 const introGif = document.getElementById("introGif");
@@ -621,14 +700,19 @@ function showAnimal() {
 
     // setelah GIF selesai
     setTimeout(() => {
-        introGif.classList.remove("show");
-        introGif.style.display = "none";
+    introGif.classList.remove("show");
+    introGif.style.display = "none";
 
-        imgAnimal.classList.add("show");
-        leftChar.classList.add("show");
-        bubble.classList.add("show");
-        btnNext.classList.add("show");
-    }, 2000); // ⏱ durasi GIF
+    imgAnimal.classList.add("show");
+    leftChar.classList.add("show");
+    bubble.classList.add("show");
+    btnNext.classList.add("show");
+
+    // 🔊 NARATOR BUNYI DI SINI
+    playNarrator(name);
+
+}, 2000);
+
 }
 
 function nextAnimal() {
@@ -723,11 +807,18 @@ const bgMusic = document.getElementById("bgMusic");
 const clickSound = document.getElementById("clickSound");
 const correctSound = document.getElementById("correctSound");
 
-// Autoplay fix
+// Autoplay fix (music + narrator)
 document.addEventListener("click", () => {
     bgMusic.muted = false;
-    bgMusic.play();
+    bgMusic.play().catch(()=>{});
+
+    narratorAudio.muted = false;
+    narratorAudio.play().catch(()=>{});
+    narratorAudio.pause();
+
+    narratorUnlocked = true;
 }, { once: true });
+
 
 function playClick() {
     clickSound.currentTime = 0;
@@ -740,7 +831,11 @@ function fadeOutElements() {
     btnNext.classList.add("fade-out");
     leftChar.classList.add("fade-out");
     bubble.classList.add("fade-out");
+
+    narratorAudio.pause();
+    narratorAudio.currentTime = 0;
 }
+
 
 
 /* ======================================
